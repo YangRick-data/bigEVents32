@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -52,6 +53,25 @@
         <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" frameborder="0" scrolling="auto"></iframe>
     </div>
 
+    <!-- bootstarp -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">提示框</h4>
+        </div>
+        <div class="modal-body my-modal-body">
+            你真的要离开吗ヽ(°◇° )ノ
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary confirm">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
     <script>
@@ -105,4 +125,24 @@
     </script>
 
 </body>
+<script>
+  $(function () {
+        $('.icon-tuichu').parent().on('click', function () {
+            $('#myModal').modal()
+        })
+        $('.confirm').on('click', function () {
+            $.ajax({
+                url: 'https://autumnfish.cn/big/admin/logout',//地址
+                data: {},//数据可以写对象
+                type: 'post',//请求的方法
+                dataType: 'json',
+                success: function (backData) {
+                    if (backData.code == 200) {
+                        window.location.href = './login.html'
+                    }
+                },
+            })
+        })
+    })
+</script>
 </html>

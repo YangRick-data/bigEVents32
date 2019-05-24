@@ -44,7 +44,6 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-          <button type="button" class="btn btn-primary">确定</button>
         </div>
       </div>
     </div>
@@ -62,7 +61,7 @@
                 var user_name = $('.input_txt').val().trim()
                 var password = $('.input_pass').val().trim()
                 if (user_name == "" || password == "") {
-                    $(".my-modal-body").text("请输入账号和密码")
+                    $(".my-modal-body").text("请输入账号和密码ヾ(o◕∀◕)ﾉヾ")
                     $('#myModal').modal()
                     return
                 }
@@ -77,7 +76,7 @@
                     dataType: 'json',
                     success: function (backData) {
                         if (backData.code == 400) {
-                            $(".my-modal-body").text("请输入正确的账号和密码")
+                            $(".my-modal-body").text("请输入正确的账号和密码ヾ(。￣□￣)ﾂ゜゜゜")
                             $('#myModal').modal()
                         } else if (backData.code == 200) {
                             window.location.href = './index.html'
@@ -86,7 +85,7 @@
                 })
             })
 
-            
+
 
         })
 </script>
