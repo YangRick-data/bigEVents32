@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -30,7 +31,63 @@
         </div>
 
     </div> 
-
+<!-- bootstarp -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">提示框</h4>
+        </div>
+        <div class="modal-body my-modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </body>
+<!-- 导入jq -->
+<script src="./js/jquery-1.12.4.min.js"></script>
+<!-- 导入bs的js -->
+<script src="./js/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+            $('.input_sub').on('click', function (e) {
+                e.preventDefault()
+                var user_name = $('.input_txt').val().trim()
+                var password = $('.input_pass').val().trim()
+                if (user_name == "" || password == "") {
+                    $(".my-modal-body").text("请输入账号和密码")
+                    $('#myModal').modal()
+                    return
+                }
 
+                $.ajax({
+                    url: 'https://autumnfish.cn/big/admin/login',//地址
+                    data: {
+                        user_name: user_name,
+                        password: password
+                    },//数据可以写对象
+                    type: 'post',//请求的方法
+                    dataType: 'json',
+                    success: function (backData) {
+                        if (backData.code == 400) {
+                            $(".my-modal-body").text("请输入正确的账号和密码")
+                            $('#myModal').modal()
+                        } else if (backData.code == 200) {
+                            window.location.href = './index.html'
+                        }
+                    },
+                })
+            })
+
+            
+
+        })
+</script>
 </html>
