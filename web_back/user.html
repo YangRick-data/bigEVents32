@@ -79,6 +79,18 @@
           $('.user_pic').attr('src',backData.data.user_pic)
         }
       });
+
+      $('#exampleInputFile').on('change',function () {
+        //  表单元素的 files属性
+        // 通过this.files伪数组结合下标获取文件 是一个用来表示图片的js对象 无法直接设置给img
+           var icon =this.files[0]
+        //    console.log(icon);
+           //把文件变为url
+           var url =URL.createObjectURL(icon)
+        //    console.log(url);
+           $(this).prev().attr('src',url)
+            
+      })
     });
   </script>
 </html>
