@@ -103,7 +103,7 @@
               <td colspan="3" class="text-center">
                 <a
                   href="#"
-                  class="btn btn-success"
+                  class="btn btn-success btn-add"
                   data-toggle="modal"
                   data-target="#addModal"
                   >新增分类</a
@@ -124,7 +124,7 @@
           </div>
           <div class="modal-body">
             <form>
-              <input type="text" name="id">
+              <input type="hidden" name="id">
               <div class="form-group">
                 <label for="recipient-name" class="control-label">分类名称:</label>
                 <input type="text" class="form-control cate_name" name ="name" />
@@ -196,71 +196,84 @@
            },
            })  
          }
-
-         getCate()
-         function postCate() {
-          $.ajax({
-                  url: 'http://localhost:8000/admin/category_add',//地址
-                  data: {
-                    //   获取对应的值
-                      name: $('.cate_name').val(),
-                      slug: $('.cate_slug').val()
-                  },//数据可以写对象
-                  type: 'post',//请求的方法
-                  dataType: 'json',
-                  success: function (backData) {
-                      if (backData.code == 200) {
-                        //   隐藏弹出框
-                          $("#addModal").modal("hide");
-                        //   重新获取数据
-                          getCate()
-                      }
-                  },
-              })
-         }
-
-
-    $('#model_add').on('click', function () {
-              $.ajax({
-                  url: 'http://localhost:8000/admin/category_add',//地址
-                  data: {
-                    //   获取对应的值
-                      name: $('.cate_name').val(),
-                      slug: $('.cate_slug').val()
-                  },//数据可以写对象
-                  type: 'post',//请求的方法
-                  dataType: 'json',
-                  success: function (backData) {
-                      if (backData.code == 200) {
-                        //   隐藏弹出框
-                          $("#addModal").modal("hide");
-                        //   重新获取数据
-                          getCate()
-                      }
-                  },
-              })
-          })
-
-    // 删除
-      window.deleteTr = function (id) {
-          $.ajax({
-            url: 'http://localhost:8000/admin/category_delete',//地址
-            data: {
-              id: id
-            },//数据可以写对象
-            type: 'post',//请求的方法
-            dataType: 'json',
-            success: function (backData) {
-              // console.log(backData);
-              if (backData.code == 200) {
+getCate()
+        // 点击新增按钮
+        $('#model_add').on('click', function () {
+          //如果是保存
+          if ($(this).hasClass('btn-success')) {
+            var id = $('input[name=id]').val()
+            var slug = $('input[name=slug]').val()
+            var name = $('input[name=name]').val()
+            $.ajax({
+              url: 'http://localhost:8000/admin/category_edit',//地址
+              data: {
+                id: id,
+                slug: slug,
+                name: name
+              },//数据可以写对象
+              type: 'post',//请求的方法
+              dataType: 'json',
+              success: function (backData) {
+                //回调函数
+                console.log(backData);
+                $("#addModal").modal("hide");
                 getCate()
-              }
-            },
-          })
-        }
-   //编辑
-  
+              },
+            })
+          } else {
+            $.ajax({
+              url: 'http://localhost:8000/admin/category_add',//地址
+              data: {
+                //   获取对应的值
+                name: $('.cate_name').val(),
+                slug: $('.cate_slug').val()
+              },//数据可以写对象
+              type: 'post',//请求的方法
+              dataType: 'json',
+              success: function (backData) {
+                if (backData.code == 200) {
+                  //   隐藏弹出框
+                  $("#addModal").modal("hide");
+                  //   重新获取数据
+                  getCate()
+                }
+              },
+            })
+          }
         })
+        //编辑
+        window.editTr = function (data) {
+          console.log(data);
+          for (const key in data) {
+            $('input[name =' + key + ']').val(data[key])
+          }
+          $('#model_add').text("修改").addClass('btn-success')
+        }
+        // 点击新增分类还原外观
+        $('.btn-add').on('click', function () {
+          $('.modal-title').text('新增分类')
+          $('#model_add').text("新增").removeClass('btn-success')
+          $('form input').val("")
+        })
+      })
+  // 删除
+  window.deleteTr = function (id) {
+    $.ajax({
+      url: 'http://localhost:8000/admin/category_delete',//地址
+      data: {
+        id: id
+      },//数据可以写对象
+      type: 'post',//请求的方法
+      dataType: 'json',
+      success: function (backData) {
+        // console.log(backData);
+        if (backData.code == 200) {
+          getCate()
+        }
+      },
+    })
+        }
+   
     </script>
   </body>
 </html>
