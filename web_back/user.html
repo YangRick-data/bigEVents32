@@ -67,7 +67,7 @@
   <script>
     $(function() {
       $.ajax({
-        url: "https://autumnfish.cn/big32/admin/userinfo_get", //地址
+        url: "http://localhost:8000/admin/userinfo_get", //地址
         data: {}, //数据可以写对象
         type: "get", //请求的方法
         dataType: "json",
@@ -91,7 +91,7 @@
         var url = URL.createObjectURL(icon);
         //    console.log(url);
         $(this)
-          .prev()
+          .siblings('img')
           .attr("src", url);
       });
 
@@ -101,7 +101,7 @@
         //实例化对象  元素必须是dom元素 
         var formData =new FormData($('form')[0])
         $.ajax({
-          url: "https://autumnfish.cn/big32/admin/userinfo_edit", //地址
+          url: "http://localhost:8000/admin/userinfo_edit", //地址
           // data对应的值是 实例化出来的对象
           data: formData, //数据可以写对象
           type: "post", //请求的方法
