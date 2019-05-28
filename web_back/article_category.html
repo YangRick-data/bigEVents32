@@ -124,6 +124,7 @@
           </div>
           <div class="modal-body">
             <form>
+              <!-- 隐藏域 -->
               <input type="hidden" name="id">
               <div class="form-group">
                 <label for="recipient-name" class="control-label">分类名称:</label>
@@ -199,18 +200,23 @@
 getCate()
         // 点击新增按钮
         $('#model_add').on('click', function () {
-          //如果是保存
+          //如果是修改就调用
           if ($(this).hasClass('btn-success')) {
-            var id = $('input[name=id]').val()
-            var slug = $('input[name=slug]').val()
-            var name = $('input[name=name]').val()
+            //获取对应的值
+            // var id = $('input[name=id]').val()
+            // var slug = $('input[name=slug]').val()
+            // var name = $('input[name=name]').val()
             $.ajax({
               url: 'http://localhost:8000/admin/category_edit',//地址
-              data: {
-                id: id,
-                slug: slug,
-                name: name
-              },//数据可以写对象
+              data: 
+                // id: id,
+                // slug: slug,
+                // name: name,
+             // 1. 快速获取表单数据
+             // 2. 表单元素必须有name属性
+             // 3. 最终的结果是 name1=value1&name2=value2 以此类推的字符串
+                $('form').serialize()
+              ,//数据可以写对象
               type: 'post',//请求的方法
               dataType: 'json',
               success: function (backData) {
@@ -221,6 +227,7 @@ getCate()
               },
             })
           } else {
+            //就调用新增
             $.ajax({
               url: 'http://localhost:8000/admin/category_add',//地址
               data: {

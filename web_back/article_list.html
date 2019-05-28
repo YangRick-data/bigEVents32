@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="./js/jquery.twbsPagination.min.js"></script>
 </head>
 
 <body>
@@ -24,10 +25,6 @@
                     <form class="form-inline">
                         <select id="selCategory" name="" class="form-control input-sm">
                             <option>所有分类</option>
-                            <option>未分类</option>
-                            <option>奇趣事</option>
-                            <option>会生活</option>
-                            <option>爱旅行</option>
                         </select>
                         <select id="selStatus" name="" class="form-control input-sm">
                             <option>所有状态</option>
@@ -274,7 +271,36 @@
             window.parent.setMenu(1,1);
         })
     </script>
+    <!-- 引入模板引擎 -->
+    <script src="./js/template-web.js"></script>
+    <script type="text/html" id="cate">
+        {{each data}}
+        <option value="{{$value.id}}">{{$value.name}}</option>
+        {{/each}}
+    </script>
+    <!-- 自己的js -->
+    <script>
+        // 文章类表 - 分类获取
+        // 请求地址：http://localhost:8000/admin/category_search
 
+        // 请求方式：get
+     $(function () {
+        //  获取分类数据
+            $.ajax({
+            url:'http://localhost:8000/admin/category_search',//地址
+            data:{},//数据可以写对象
+            // type:'',//请求的方法  get方法默认可以不写
+            dataType: 'json',
+            success:function(backData){
+             //回调函数
+             console.log(backData);
+             $('#selCategory').append(template('cate',backData))
+            },
+            })
+
+
+        })
+    </script>
 </body>
 
 </html>
