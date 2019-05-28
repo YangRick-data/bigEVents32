@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/jquery-1.12.4.min.js"></script>
+    <!-- 分页插件 -->
     <script src="./js/jquery.twbsPagination.min.js"></script>
 </head>
 
@@ -312,47 +313,15 @@
         //             2. page&perpage 第一页，每页6条
         //             3. 数据回来之后渲染到页面上 模板引擎
      $(function () {
-        //  获取分类数据
-            $.ajax({
-             url: 'http://localhost:8000/admin/category_search',//地址
-             // type:'',//请求的方法  get方法默认可以不写
-             dataType: 'json',
-             success: function (backData) {
-                 //回调函数
-                 console.log(backData);
-                 $('#selCategory').append(template('cate', backData))
-             },
-         })
+       
         //  定义页码
-         var mypapg = 1
-        //  获取分页数据
-        function getArticles() {
-            $.ajax({
-             url: 'http://localhost:8000/admin/search',//地址
-             data: {
-                //  页码
-                 page: mypapg,
-                // 显示多少文章
-                 perpage: 6,
-                 //文章的分类id
-                 type: $('#selCategory').val(),
-                 // 状态
-                 state: $("#selStatus").val()
-
-             },//数据可以写对象
-             // type:'',//请求的方法  get方法默认可以不写
-             dataType: 'json',
-             success: function (backData) {
-                 //回调函数
-                 console.log(backData);
-                 $('tbody').html(template('article', backData))
-             },
-         })
-        }
-        getArticles()
-        //分页插件
-         $('.pagination').twbsPagination({
-             totalPages: 30,
+         var myPapg = 1;
+         //总页码
+         var myTotalPages = 10;
+           //分页插件
+        var $pagination = $('.pagination');
+         var defaultOpts = {
+             totalPages: myTotalPages,
              visiblePages: 7,
              first: '首页',
              prev: '上一页',
@@ -364,18 +333,69 @@
                  // 对应的页码
                  // console.log(page);
                  //修改页码
-                 mypapg = page
+                 myPapg = page
                  // 调用抽取好的分页数据
                  getArticles()
              }
-         });
+         };
+         $pagination.twbsPagination(defaultOpts);
+        //  获取文章数据数据
+        function getArticles() {
+             $.ajax({
+                 url: 'http://localhost:8000/admin/search',//地址
+                 data: {
+                     //  页码
+                     page: myPapg,
+                     // 显示多少文章
+                     perpage: 6,
+                     //文章的分类id
+                     type: $('#selCategory').val(),
+                     // 状态
+                     state: $("#selStatus").val()
+                 },//数据可以写对象
+                 // type:'',//请求的方法  get方法默认可以不写
+                 success: function (backData) {
+                     //回调函数
+                     console.log(backData);
+                     $('tbody').html(template('article', backData))
 
-    //点击筛选
-    $('#btnSearch').on('click',function (e) {
-          e.preventDefault()
-          getArticles()
-        })
-        })
+                     //重置页码
+                     var totalPages = backData.totalPage
+                    //  当总页码不等于当前总页码是
+            if (myTotalPages != totalPages) {
+                         //改变总页码
+                         myTotalPages = totalPages;
+                         $pagination.twbsPagination('destroy');
+                         $pagination.twbsPagination(
+                             $.extend({}, defaultOpts, {
+                                 //  写死为第一页
+                                 startPage: 1,
+                                 totalPages: totalPages
+                             })
+                         );
+                     }
+                 }
+             })
+        }
+         //  获取分类数据
+         $.ajax({
+             url: 'http://localhost:8000/admin/category_search',//地址
+             // type:'',//请求的方法  get方法默认可以不写
+             dataType: 'json',
+             success: function (backData) {
+                 //回调函数
+                //  console.log(backData);
+                 $('#selCategory').append(template('cate', backData))
+             },
+         })
+        getArticles()
+      
+         //点击筛选
+         $('#btnSearch').on('click', function (e) {
+             e.preventDefault()
+             getArticles()
+         })
+     })
     </script>
 </body>
 
