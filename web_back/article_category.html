@@ -222,8 +222,9 @@ getCate()
               success: function (backData) {
                 //回调函数
                 console.log(backData);
-                $("#addModal").modal("hide");
-                getCate()
+                if(backData.code == 200){
+                  getCate()
+                }
               },
             })
           } else {
@@ -236,17 +237,18 @@ getCate()
                 slug: $('.cate_slug').val()
               },//数据可以写对象
               type: 'post',//请求的方法
-              dataType: 'json',
               success: function (backData) {
+                //   隐藏弹出框
+                $("#addModal").modal("hide");
                 if (backData.code == 200) {
-                  //   隐藏弹出框
-                  $("#addModal").modal("hide");
+                  
                   //   重新获取数据
                   getCate()
                 }
               },
             })
           }
+          $("#addModal").modal("hide");
         })
         //编辑
         window.editTr = function (data) {
@@ -262,22 +264,22 @@ getCate()
           $('#model_add').text("新增").removeClass('btn-success')
           $('form input').val("")
         })
-  // 删除
-  window.deleteTr = function (id) {
-    $.ajax({
-      url: 'http://localhost:8000/admin/category_delete',//地址
-      data: {
-        id: id
-      },//数据可以写对象
-      type: 'post',//请求的方法
-      dataType: 'json',
-      success: function (backData) {
-        // console.log(backData);
-        if (backData.code == 200) {
-          getCate()
-        }
-      },
-    })
+        // 删除
+        window.deleteTr = function (id) {
+          $.ajax({
+            url: 'http://localhost:8000/admin/category_delete',//地址
+            data: {
+              id: id
+            },//数据可以写对象
+            type: 'post',//请求的方法
+            dataType: 'json',
+            success: function (backData) {
+              // console.log(backData);
+              if (backData.code == 200) {
+                getCate()
+              }
+            },
+          })
         }
       })
     </script>
