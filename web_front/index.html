@@ -222,5 +222,47 @@
     </div>
 
 </body>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<!-- 导入模板引擎 -->
+<script src="./js/template-web.js"></script>
+<script type="text/html" id="cate">
+      {{each data v}}
+      {{if $index==0}}
+     <li class="first">
+      {{else}}
+       <li>
+      {{/if}}
+        <a href="./article.html?id={{v.id}}"><img src="{{v.cover}}" alt=""></a>
+        <p>{{v.title}}</p>
+    </li>
+{{/each}}
+</script>
+<script>
+     $(function () {
+          /*
+        获取文章数据
+            请求地址：http://localhost:8000/admin/search
+            请求方式：get
+            请求参数：page,perpage
+            步骤
+            1. 打开前台首页时 ajax获取数据
+            2. 获取前5条数据
+            3. 数据获取到之后，渲染到页面上
+        */
 
+         $.ajax({
+         url:'http://localhost:8000/admin/search',//地址
+         data:{
+             page:1,
+             perpage:5,
+         },//数据可以写对象
+         dataType: 'json',
+         success:function(backData){
+          //回调函数
+          console.log(backData);
+          $('.focus_list').html(template('cate',backData))
+         },
+         })  
+        })
+</script>
 </html>
